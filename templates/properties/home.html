@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="container hero-content">
+    <p class="brand-mark">Reeltor</p>
+    <p class="region-tag">Грозный · Чеченская Республика</p>
+    <h1>Подберём жильё и коммерцию в Грозном под вашу задачу</h1>
+    <p class="lead">Каталог продажи и аренды по городу, понятные фильтры и заявка на персональный подбор от риелтора.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{% url 'catalog' %}">Смотреть каталог</a>
+      <a class="btn btn-ghost" href="{% url 'selection' %}" style="border-color:rgba(245,231,192,.55);color:#fff">Заказать подбор</a>
+    </div>
+
+    <form class="quick-search" method="get" action="{% url 'catalog' %}" aria-label="Быстрый поиск по Грозному">
+      <label>
+        <span>Сделка</span>
+        <select name="deal">
+          <option value="">Любая</option>
+          {% for value, label in deal_types %}
+          <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Тип</span>
+        <select name="type">
+          <option value="">Любой</option>
+          {% for value, label in property_types %}
+          <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Цена до, ₽</span>
+        <input type="number" name="price_max" min="0" step="100000" placeholder="8 000 000">
+      </label>
+      <button type="submit" class="btn btn-secondary">Найти в Грозном</button>
+    </form>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-ornament" aria-hidden="true"></div>
+    <div class="section-head">
+      <div>
+        <h2>Как мы работаем в Грозном</h2>
+        <p>Сначала результат: каталог по городу, затем персональный подбор.</p>
+      </div>
+    </div>
+    <div class="services">
+      <article class="service">
+        <h3>Каталог по Грозному</h3>
+        <p>Продажа и аренда, район, комнаты, цена и площадь — без объектов из других городов.</p>
+      </article>
+      <article class="service">
+        <h3>Персональный подбор</h3>
+        <p>Короткий бриф: бюджет, район города, тип объекта. Риелтор соберёт подборку.</p>
+      </article>
+      <article class="service">
+        <h3>Контакт на месте</h3>
+        <p>Офис и связь в Грозном — быстрый переход от карточки к просмотру.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Свежие предложения в Грозном</h2>
+        <p>
+          {% if sale_count or rent_count %}
+            В каталоге: {{ sale_count }} на продажу · {{ rent_count }} в аренду
+          {% else %}
+            Опубликованные объекты появятся здесь
+          {% endif %}
+        </p>
+      </div>
+      <a href="{% url 'catalog' %}">Весь каталог →</a>
+    </div>
+
+    {% if latest_properties %}
+    <div class="property-grid">
+      {% for item in latest_properties %}
+        {% include "properties/_card.html" with item=item %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">Пока нет опубликованных объектов. Добавьте их в <a href="/admin/">админке</a> или загрузите демо-данные.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container selection-layout">
+    <div>
+      <h2 style="font-family:var(--display);font-size:1.7rem;margin:0 0 .5rem;color:var(--brand-deep)">Нужна подборка по Грозному?</h2>
+      <p class="lead" style="color:var(--muted)">Оставьте заявку — уточним цель, бюджет и район, затем пришлём варианты.</p>
+    </div>
+    <div>
+      <a class="btn btn-primary" href="{% url 'selection' %}">Перейти к подбору</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог — Грозный{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Каталог недвижимости в Грозном</h1>
+    <p class="lead">Чеченская Республика · фильтры по сделке, типу, району, комнатам, цене и площади.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <form class="filters" method="get" action="{% url 'catalog' %}">
+      <label>
+        <span>Поиск</span>
+        <input type="search" name="q" value="{{ filters.q }}" placeholder="Адрес, ЖК, район…">
+      </label>
+      <label>
+        <span>Сделка</span>
+        <select name="deal">
+          <option value="">Любая</option>
+          {% for value, label in deal_types %}
+          <option value="{{ value }}" {% if filters.deal == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Тип объекта</span>
+        <select name="type">
+          <option value="">Любой</option>
+          {% for value, label in property_types %}
+          <option value="{{ value }}" {% if filters.type == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Район Грозного</span>
+        <input type="text" name="district" value="{{ filters.district }}" list="districts" placeholder="Центр, Ахматовский…">
+        <datalist id="districts">
+          {% for d in districts %}
+          <option value="{{ d }}">
+          {% endfor %}
+        </datalist>
+      </label>
+      <label>
+        <span>Комнат</span>
+        <select name="rooms">
+          <option value="">Любое</option>
+          {% for n in "12345" %}
+          <option value="{{ n }}" {% if filters.rooms == n %}selected{% endif %}>{{ n }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Цена от, ₽</span>
+        <input type="number" name="price_min" value="{{ filters.price_min }}" min="0" step="100000">
+      </label>
+      <label>
+        <span>Цена до, ₽</span>
+        <input type="number" name="price_max" value="{{ filters.price_max }}" min="0" step="100000">
+      </label>
+      <label>
+        <span>Площадь от, м²</span>
+        <input type="number" name="area_min" value="{{ filters.area_min }}" min="0" step="1">
+      </label>
+      <div class="filters-actions">
+        <button type="submit" class="btn btn-primary">Показать</button>
+        <a class="btn btn-ghost" href="{% url 'catalog' %}">Сбросить</a>
+        <a class="btn btn-ghost" href="{% url 'selection' %}?deal={{ filters.deal }}&amp;type={{ filters.type }}&amp;district={{ filters.district }}">Заказать подбор</a>
+      </div>
+    </form>
+
+    <p class="results-count">Грозный · найдено: <strong>{{ total }}</strong></p>
+
+    {% if properties %}
+    <div class="property-grid">
+      {% for item in properties %}
+        {% include "properties/_card.html" with item=item %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">Ничего не найдено в Грозном. Измените фильтры или оформите <a href="{% url 'selection' %}">персональный подбор</a>.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

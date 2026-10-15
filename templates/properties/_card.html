@@ -1,0 +1,24 @@
+{% load humanize %}
+<article class="property-card">
+  <a href="{{ item.get_absolute_url }}" class="property-card-link">
+    <div class="property-card-media">
+      {% if item.photo %}
+      <img src="{{ item.photo.url }}" alt="{{ item.title }}">
+      {% else %}
+      <div class="photo-placeholder">Нет фото</div>
+      {% endif %}
+      <span class="type-badge">{{ item.get_property_type_display }}</span>
+      <span class="deal-badge">{{ item.get_deal_type_display }}</span>
+    </div>
+    <div class="property-card-body">
+      <h3>{{ item.title }}</h3>
+      <p class="price">{{ item.price|intcomma }} {{ item.price_label }}</p>
+      <p class="meta">
+        {{ item.area }} м²
+        {% if item.rooms %} · {{ item.rooms }}-комн.{% endif %}
+        {% if item.district %} · {{ item.district }}{% endif %}
+      </p>
+      <p class="address">Грозный, {{ item.address }}</p>
+    </div>
+  </a>
+</article>
