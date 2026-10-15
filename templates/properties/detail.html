@@ -7,7 +7,7 @@
 <section class="section detail">
   <div class="container">
     <p class="breadcrumb">
-      <a href="{% url 'catalog' %}">Каталог</a>
+      <a href="{% url 'catalog' %}">Каталог · Грозный</a>
       / {{ property.get_deal_type_display }}
       / {{ property.get_property_type_display }}
     </p>
@@ -24,13 +24,15 @@
       <div class="detail-info">
         <h1>{{ property.title }}</h1>
         <p class="price">{{ property.price|intcomma }} {{ property.price_label }}</p>
-        <p class="meta">{{ property.city }}, {{ property.address }}</p>
+        <p class="meta">Грозный{% if property.district %}, {{ property.district }}{% endif %} · {{ property.address }}</p>
 
         <dl class="specs">
+          <div><dt>Город</dt><dd>Грозный</dd></div>
           <div><dt>Сделка</dt><dd>{{ property.get_deal_type_display }}</dd></div>
           <div><dt>Тип</dt><dd>{{ property.get_property_type_display }}</dd></div>
           <div><dt>Площадь</dt><dd>{{ property.area }} м²</dd></div>
           {% if property.rooms %}<div><dt>Комнат</dt><dd>{{ property.rooms }}</dd></div>{% endif %}
+          {% if property.district %}<div><dt>Район</dt><dd>{{ property.district }}</dd></div>{% endif %}
           {% if property.floor %}<div><dt>Этаж</dt><dd>{{ property.floor }}{% if property.floors_total %}/{{ property.floors_total }}{% endif %}</dd></div>{% endif %}
           <div><dt>Статус</dt><dd>{{ property.get_status_display }}</dd></div>
         </dl>
@@ -40,7 +42,7 @@
         {% endif %}
 
         <div class="cta-row">
-          <a class="btn btn-primary" href="{% url 'selection' %}?deal={{ property.deal_type }}&amp;type={{ property.property_type }}&amp;city={{ property.city }}">Заявка на подбор</a>
+          <a class="btn btn-primary" href="{% url 'selection' %}?deal={{ property.deal_type }}&amp;type={{ property.property_type }}&amp;district={{ property.district }}">Заявка на подбор</a>
           <a class="btn btn-ghost" href="{% url 'contacts' %}">Контакты</a>
         </div>
       </div>
@@ -55,7 +57,7 @@
 
     {% if similar %}
     <div class="similar">
-      <h2>Похожие объекты</h2>
+      <h2>Похожие объекты в Грозном</h2>
       <div class="property-grid">
         {% for item in similar %}
           {% include "properties/_card.html" with item=item %}

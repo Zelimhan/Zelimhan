@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Каталог{% endblock %}
+{% block title %}Каталог — Грозный{% endblock %}
 
 {% block content %}
 <section class="page-hero">
   <div class="container">
-    <h1>Каталог недвижимости</h1>
-    <p class="lead">Фильтры по сделке, типу, городу, комнатам, цене и площади.</p>
+    <h1>Каталог недвижимости в Грозном</h1>
+    <p class="lead">Чеченская Республика · фильтры по сделке, типу, району, комнатам, цене и площади.</p>
   </div>
 </section>
 
@@ -36,11 +36,11 @@
         </select>
       </label>
       <label>
-        <span>Город / регион</span>
-        <input type="text" name="city" value="{{ filters.city }}" list="cities" placeholder="Например, Грозный">
-        <datalist id="cities">
-          {% for c in cities %}
-          <option value="{{ c }}">
+        <span>Район Грозного</span>
+        <input type="text" name="district" value="{{ filters.district }}" list="districts" placeholder="Центр, Ахматовский…">
+        <datalist id="districts">
+          {% for d in districts %}
+          <option value="{{ d }}">
           {% endfor %}
         </datalist>
       </label>
@@ -68,11 +68,11 @@
       <div class="filters-actions">
         <button type="submit" class="btn btn-primary">Показать</button>
         <a class="btn btn-ghost" href="{% url 'catalog' %}">Сбросить</a>
-        <a class="btn btn-ghost" href="{% url 'selection' %}?deal={{ filters.deal }}&amp;type={{ filters.type }}&amp;city={{ filters.city }}">Заказать подбор</a>
+        <a class="btn btn-ghost" href="{% url 'selection' %}?deal={{ filters.deal }}&amp;type={{ filters.type }}&amp;district={{ filters.district }}">Заказать подбор</a>
       </div>
     </form>
 
-    <p class="results-count">Найдено: <strong>{{ total }}</strong></p>
+    <p class="results-count">Грозный · найдено: <strong>{{ total }}</strong></p>
 
     {% if properties %}
     <div class="property-grid">
@@ -81,7 +81,7 @@
       {% endfor %}
     </div>
     {% else %}
-    <p class="empty">Ничего не найдено. Измените фильтры или оформите <a href="{% url 'selection' %}">персональный подбор</a>.</p>
+    <p class="empty">Ничего не найдено в Грозном. Измените фильтры или оформите <a href="{% url 'selection' %}">персональный подбор</a>.</p>
     {% endif %}
   </div>
 </section>

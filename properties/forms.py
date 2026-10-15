@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Property, SelectionRequest
+from .models import GROZNY, Property, SelectionRequest
 
 
 class SelectionRequestForm(forms.ModelForm):
@@ -12,7 +12,7 @@ class SelectionRequestForm(forms.ModelForm):
             'email',
             'deal_type',
             'property_type',
-            'city',
+            'district',
             'budget_min',
             'budget_max',
             'rooms',
@@ -22,7 +22,9 @@ class SelectionRequestForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'placeholder': 'Как к вам обращаться'}),
             'phone': forms.TextInput(attrs={'placeholder': '+7 …'}),
             'email': forms.EmailInput(attrs={'placeholder': 'email@example.com'}),
-            'city': forms.TextInput(attrs={'placeholder': 'Город или регион'}),
+            'district': forms.TextInput(attrs={
+                'placeholder': 'Например, центр, Ахматовский…',
+            }),
             'budget_min': forms.NumberInput(attrs={'placeholder': 'От', 'min': 0, 'step': 100000}),
             'budget_max': forms.NumberInput(attrs={'placeholder': 'До', 'min': 0, 'step': 100000}),
             'rooms': forms.NumberInput(attrs={'placeholder': 'Например, 2', 'min': 0}),
@@ -43,3 +45,10 @@ class SelectionRequestForm(forms.ModelForm):
             if isinstance(field.widget, forms.Select):
                 css = 'select'
             field.widget.attrs.setdefault('class', css)
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        obj.city = GROZNY
+        if commit:
+            obj.save()
+        return obj

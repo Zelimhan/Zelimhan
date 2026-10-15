@@ -7,14 +7,15 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="container hero-content">
     <p class="brand-mark">Reeltor</p>
-    <h1>Подберём объект под задачу — от первой фильтровки до сделки</h1>
-    <p class="lead">Каталог продажи и аренды, понятные фильтры и заявка на персональный подбор от риелтора.</p>
+    <p class="region-tag">Грозный · Чеченская Республика</p>
+    <h1>Подберём жильё и коммерцию в Грозном под вашу задачу</h1>
+    <p class="lead">Каталог продажи и аренды по городу, понятные фильтры и заявка на персональный подбор от риелтора.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="{% url 'catalog' %}">Смотреть каталог</a>
-      <a class="btn btn-ghost" href="{% url 'selection' %}" style="border-color:rgba(255,255,255,.45);color:#fff">Заказать подбор</a>
+      <a class="btn btn-ghost" href="{% url 'selection' %}" style="border-color:rgba(245,231,192,.55);color:#fff">Заказать подбор</a>
     </div>
 
-    <form class="quick-search" method="get" action="{% url 'catalog' %}" aria-label="Быстрый поиск">
+    <form class="quick-search" method="get" action="{% url 'catalog' %}" aria-label="Быстрый поиск по Грозному">
       <label>
         <span>Сделка</span>
         <select name="deal">
@@ -34,38 +35,35 @@
         </select>
       </label>
       <label>
-        <span>Город</span>
-        <input type="text" name="city" placeholder="Москва">
-      </label>
-      <label>
         <span>Цена до, ₽</span>
-        <input type="number" name="price_max" min="0" step="100000" placeholder="10 000 000">
+        <input type="number" name="price_max" min="0" step="100000" placeholder="8 000 000">
       </label>
-      <button type="submit" class="btn btn-secondary">Найти</button>
+      <button type="submit" class="btn btn-secondary">Найти в Грозном</button>
     </form>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
+    <div class="section-ornament" aria-hidden="true"></div>
     <div class="section-head">
       <div>
-        <h2>Как работает агентство</h2>
-        <p>Структура как у сильных агентств: сначала результат, потом процесс.</p>
+        <h2>Как мы работаем в Грозном</h2>
+        <p>Сначала результат: каталог по городу, затем персональный подбор.</p>
       </div>
     </div>
     <div class="services">
       <article class="service">
-        <h3>Каталог с фильтрами</h3>
-        <p>Продажа и аренда, город, комнаты, цена и площадь — как в крупных витринах недвижимости.</p>
+        <h3>Каталог по Грозному</h3>
+        <p>Продажа и аренда, район, комнаты, цена и площадь — без объектов из других городов.</p>
       </article>
       <article class="service">
         <h3>Персональный подбор</h3>
-        <p>Короткий бриф: бюджет, район, тип объекта. Риелтор соберёт подборку под вашу задачу.</p>
+        <p>Короткий бриф: бюджет, район города, тип объекта. Риелтор соберёт подборку.</p>
       </article>
       <article class="service">
-        <h3>Сопровождение</h3>
-        <p>Контакты агентства и карточка объекта с риелтором — чтобы быстро перейти к просмотру.</p>
+        <h3>Контакт на месте</h3>
+        <p>Офис и связь в Грозном — быстрый переход от карточки к просмотру.</p>
       </article>
     </div>
   </div>
@@ -75,7 +73,7 @@
   <div class="container">
     <div class="section-head">
       <div>
-        <h2>Свежие предложения</h2>
+        <h2>Свежие предложения в Грозном</h2>
         <p>
           {% if sale_count or rent_count %}
             В каталоге: {{ sale_count }} на продажу · {{ rent_count }} в аренду
@@ -102,8 +100,8 @@
 <section class="section" style="padding-top:0">
   <div class="container selection-layout">
     <div>
-      <h2 style="font-family:var(--display);font-size:1.7rem;margin:0 0 .5rem">Нужна подборка, а не бесконечный скролл?</h2>
-      <p class="lead" style="color:var(--muted)">Оставьте заявку — уточним цель, бюджет и сроки, затем пришлём варианты.</p>
+      <h2 style="font-family:var(--display);font-size:1.7rem;margin:0 0 .5rem;color:var(--brand-deep)">Нужна подборка по Грозному?</h2>
+      <p class="lead" style="color:var(--muted)">Оставьте заявку — уточним цель, бюджет и район, затем пришлём варианты.</p>
     </div>
     <div>
       <a class="btn btn-primary" href="{% url 'selection' %}">Перейти к подбору</a>

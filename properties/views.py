@@ -4,18 +4,21 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_GET, require_http_methods
 
 from .forms import SelectionRequestForm
-from .models import Property
+from .models import GROZNY, Property
 
 
 def _published_queryset():
-    return Property.objects.filter(status=Property.Status.PUBLISHED)
+    return Property.objects.filter(
+        status=Property.Status.PUBLISHED,
+        city=GROZNY,
+    )
 
 
 def _apply_filters(qs, params):
     q = params.get('q', '').strip()
     deal_type = params.get('deal', '').strip()
     property_type = params.get('type', '').strip()
-    city = params.get('city', '').strip()
+    district = params.get('district', '').strip()
     rooms = params.get('rooms', '').strip()
     price_min = params.get('price_min', '').strip()
     price_max = params.get('price_max', '').strip()
@@ -25,15 +28,15 @@ def _apply_filters(qs, params):
         qs = qs.filter(
             Q(title__icontains=q)
             | Q(address__icontains=q)
-            | Q(city__icontains=q)
+            | Q(district__icontains=q)
             | Q(description__icontains=q)
         )
     if deal_type in dict(Property.DealType.choices):
         qs = qs.filter(deal_type=deal_type)
     if property_type in dict(Property.PropertyType.choices):
         qs = qs.filter(property_type=property_type)
-    if city:
-        qs = qs.filter(city__icontains=city)
+    if district:
+        qs = qs.filter(district__icontains=district)
     if rooms.isdigit():
         qs = qs.filter(rooms=int(rooms))
     if price_min.isdigit():
@@ -50,7 +53,7 @@ def _apply_filters(qs, params):
         'q': q,
         'deal': deal_type,
         'type': property_type,
-        'city': city,
+        'district': district,
         'rooms': rooms,
         'price_min': price_min,
         'price_max': price_max,
@@ -69,25 +72,28 @@ def home(request):
         'deal_types': Property.DealType.choices,
         'sale_count': sale_count,
         'rent_count': rent_count,
+        'city': GROZNY,
     })
 
 
 @require_GET
 def catalog(request):
     qs, filters = _apply_filters(_published_queryset(), request.GET)
-    cities = (
+    districts = (
         _published_queryset()
-        .values_list('city', flat=True)
+        .exclude(district='')
+        .values_list('district', flat=True)
         .distinct()
-        .order_by('city')
+        .order_by('district')
     )
     return render(request, 'properties/catalog.html', {
         'properties': qs,
         'property_types': Property.PropertyType.choices,
         'deal_types': Property.DealType.choices,
-        'cities': cities,
+        'districts': districts,
         'filters': filters,
         'total': qs.count(),
+        'city': GROZNY,
     })
 
 
@@ -107,7 +113,7 @@ def property_detail(request, pk):
 
 @require_GET
 def contacts(request):
-    return render(request, 'properties/contacts.html')
+    return render(request, 'properties/contacts.html', {'city': GROZNY})
 
 
 @require_http_methods(['GET', 'POST'])
@@ -118,7 +124,7 @@ def selection(request):
             form.save()
             messages.success(
                 request,
-                'Заявка отправлена. Риелтор свяжется с вами и подготовит подборку.',
+                'Заявка отправлена. Риелтор в Грозном свяжется с вами и подготовит подборку.',
             )
             return redirect('selection_thanks')
     else:
@@ -127,15 +133,16 @@ def selection(request):
             initial['deal_type'] = request.GET['deal']
         if request.GET.get('type') in dict(Property.PropertyType.choices):
             initial['property_type'] = request.GET['type']
-        if request.GET.get('city'):
-            initial['city'] = request.GET['city']
+        if request.GET.get('district'):
+            initial['district'] = request.GET['district']
         form = SelectionRequestForm(initial=initial)
 
     return render(request, 'properties/selection.html', {
         'form': form,
+        'city': GROZNY,
     })
 
 
 @require_GET
 def selection_thanks(request):
-    return render(request, 'properties/selection_thanks.html')
+    return render(request, 'properties/selection_thanks.html', {'city': GROZNY})

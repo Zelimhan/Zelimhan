@@ -9,7 +9,7 @@ class PropertyAdmin(admin.ModelAdmin):
         'title',
         'deal_type',
         'property_type',
-        'city',
+        'district',
         'price',
         'area',
         'rooms',
@@ -17,11 +17,11 @@ class PropertyAdmin(admin.ModelAdmin):
         'realtor',
         'created_at',
     )
-    list_filter = ('status', 'deal_type', 'property_type', 'city')
-    search_fields = ('title', 'address', 'city', 'description')
+    list_filter = ('status', 'deal_type', 'property_type', 'district')
+    search_fields = ('title', 'address', 'district', 'description')
     list_editable = ('status',)
     autocomplete_fields = ('realtor',)
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('city', 'created_at', 'updated_at')
     fieldsets = (
         (None, {
             'fields': ('title', 'deal_type', 'property_type', 'status', 'realtor'),
@@ -29,8 +29,8 @@ class PropertyAdmin(admin.ModelAdmin):
         ('Характеристики', {
             'fields': ('price', 'area', 'rooms', 'floor', 'floors_total'),
         }),
-        ('Расположение', {
-            'fields': ('city', 'address'),
+        ('Расположение (Грозный)', {
+            'fields': ('city', 'district', 'address'),
         }),
         ('Описание и фото', {
             'fields': ('description', 'photo'),
@@ -48,14 +48,14 @@ class SelectionRequestAdmin(admin.ModelAdmin):
         'phone',
         'deal_type',
         'property_type',
-        'city',
+        'district',
         'budget_max',
         'status',
         'assigned_to',
         'created_at',
     )
     list_filter = ('status', 'deal_type', 'property_type')
-    search_fields = ('name', 'phone', 'email', 'city', 'comment')
+    search_fields = ('name', 'phone', 'email', 'district', 'comment')
     list_editable = ('status',)
     autocomplete_fields = ('assigned_to',)
-    readonly_fields = ('created_at',)
+    readonly_fields = ('city', 'created_at')

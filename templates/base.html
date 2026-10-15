@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Reeltor{% endblock %} — подбор недвижимости</title>
+  <title>{% block title %}Reeltor{% endblock %} — недвижимость в Грозном</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Literata:opsz,wght@7..72,500;7..72,600&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="logo" href="{% url 'home' %}">Reeltor</a>
+      <a class="logo" href="{% url 'home' %}"><span class="logo-mark" aria-hidden="true"></span>Reeltor</a>
       <nav class="nav" aria-label="Основная навигация">
         <a href="{% url 'home' %}">Главная</a>
         <a href="{% url 'catalog' %}">Каталог</a>
@@ -39,8 +39,8 @@
   <footer class="site-footer">
     <div class="container footer-inner">
       <div>
-        <strong class="logo">Reeltor</strong>
-        <p>Агентство подбора недвижимости: каталог, фильтры и персональные подборки.</p>
+        <strong class="logo"><span class="logo-mark" aria-hidden="true"></span>Reeltor</strong>
+        <p>Подбор недвижимости в Грозном (Чеченская Республика): каталог, фильтры и персональные заявки.</p>
       </div>
       <div class="footer-links">
         <a href="{% url 'catalog' %}">Каталог</a>

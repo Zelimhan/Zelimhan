@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Подбор{% endblock %}
+{% block title %}Подбор в Грозном{% endblock %}
 
 {% block content %}
 <section class="page-hero">
   <div class="container">
-    <h1>Персональный подбор</h1>
-    <p class="lead">Короткий бриф — и риелтор соберёт варианты под бюджет и задачу.</p>
+    <h1>Персональный подбор в Грозном</h1>
+    <p class="lead">Короткий бриф — и риелтор соберёт варианты по Чеченской Республике, город Грозный.</p>
   </div>
 </section>
 
@@ -17,11 +17,11 @@
       <ol>
         <li>
           <strong>Бриф</strong>
-          <p>Цель сделки, бюджет, район, тип объекта и сроки.</p>
+          <p>Цель сделки, бюджет, район Грозного, тип объекта и сроки.</p>
         </li>
         <li>
           <strong>Подборка</strong>
-          <p>Риелтор отберёт актуальные объекты из каталога и рынка.</p>
+          <p>Риелтор отберёт актуальные объекты только по Грозному.</p>
         </li>
         <li>
           <strong>Просмотры</strong>
@@ -29,13 +29,14 @@
         </li>
         <li>
           <strong>Сделка</strong>
-          <p>Дальше — сопровождение по вашему сценарию (в следующих версиях кабинетов).</p>
+          <p>Дальше — сопровождение (кабинеты появятся в следующих версиях).</p>
         </li>
       </ol>
     </div>
 
     <div class="form-panel">
       <h2>Оставить заявку</h2>
+      <p style="margin:0 0 1rem;color:var(--muted);font-size:.95rem">Город зафиксирован: <strong>Грозный</strong></p>
       <form method="post" novalidate>
         {% csrf_token %}
         <div class="form-grid">
@@ -63,8 +64,8 @@
             {{ form.property_type }}
           </label>
           <label>
-            <span>Город / регион</span>
-            {{ form.city }}
+            <span>Район Грозного</span>
+            {{ form.district }}
           </label>
           <label>
             <span>Бюджет от, ₽</span>

@@ -3,6 +3,9 @@ from django.db import models
 from django.urls import reverse
 
 
+GROZNY = 'Грозный'
+
+
 class Property(models.Model):
     class DealType(models.TextChoices):
         SALE = 'sale', 'Продажа'
@@ -48,7 +51,8 @@ class Property(models.Model):
     rooms = models.PositiveSmallIntegerField('Комнат', null=True, blank=True)
     floor = models.PositiveSmallIntegerField('Этаж', null=True, blank=True)
     floors_total = models.PositiveSmallIntegerField('Этажей в доме', null=True, blank=True)
-    city = models.CharField('Город', max_length=100, default='Москва')
+    city = models.CharField('Город', max_length=100, default=GROZNY, editable=False)
+    district = models.CharField('Район', max_length=100, blank=True)
     address = models.CharField('Адрес', max_length=255)
     description = models.TextField('Описание', blank=True)
     photo = models.ImageField('Фото', upload_to='properties/%Y/%m/', blank=True)
@@ -69,6 +73,10 @@ class Property(models.Model):
         verbose_name_plural = 'Объекты недвижимости'
         ordering = ['-created_at']
 
+    def save(self, *args, **kwargs):
+        self.city = GROZNY
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.title
 
@@ -83,7 +91,7 @@ class Property(models.Model):
 
 
 class SelectionRequest(models.Model):
-    """Заявка на персональный подбор (сценарий в духе smarents/podbor)."""
+    """Заявка на персональный подбор по Грозному."""
 
     class Status(models.TextChoices):
         NEW = 'new', 'Новая'
@@ -105,7 +113,8 @@ class SelectionRequest(models.Model):
         choices=Property.PropertyType.choices,
         blank=True,
     )
-    city = models.CharField('Город / регион', max_length=100, blank=True)
+    city = models.CharField('Город', max_length=100, default=GROZNY, editable=False)
+    district = models.CharField('Район Грозного', max_length=100, blank=True)
     budget_min = models.PositiveIntegerField('Бюджет от, ₽', null=True, blank=True)
     budget_max = models.PositiveIntegerField('Бюджет до, ₽', null=True, blank=True)
     rooms = models.PositiveSmallIntegerField('Комнат', null=True, blank=True)
@@ -132,6 +141,10 @@ class SelectionRequest(models.Model):
         verbose_name = 'Заявка на подбор'
         verbose_name_plural = 'Заявки на подбор'
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        self.city = GROZNY
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.name} — {self.phone}'

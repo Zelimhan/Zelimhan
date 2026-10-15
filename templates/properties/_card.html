@@ -16,9 +16,9 @@
       <p class="meta">
         {{ item.area }} м²
         {% if item.rooms %} · {{ item.rooms }}-комн.{% endif %}
-        · {{ item.city }}
+        {% if item.district %} · {{ item.district }}{% endif %}
       </p>
-      <p class="address">{{ item.address }}</p>
+      <p class="address">Грозный, {{ item.address }}</p>
     </div>
   </a>
 </article>

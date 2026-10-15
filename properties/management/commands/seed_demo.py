@@ -4,64 +4,64 @@ from django.core.management.base import BaseCommand
 from django.db import transaction
 
 from accounts.models import User
-from properties.models import Property
+from properties.models import GROZNY, Property
 
 
 DEMO_PROPERTIES = [
     {
-        'title': '2-комн. у парка',
+        'title': '2-комн. у Мечети «Сердце Чечни»',
         'deal_type': Property.DealType.SALE,
         'property_type': Property.PropertyType.APARTMENT,
-        'price': Decimal('12500000'),
+        'price': Decimal('6200000'),
         'area': Decimal('58.0'),
         'rooms': 2,
         'floor': 7,
-        'floors_total': 16,
-        'city': 'Москва',
-        'address': 'ул. Садовая, 12',
-        'description': 'Светлая квартира с видом во двор, рядом парк и школа.',
+        'floors_total': 12,
+        'district': 'Ахматовский',
+        'address': 'пр. А.А. Кадырова, 18',
+        'description': 'Светлая квартира в Грозном, рядом парк и инфраструктура района.',
     },
     {
-        'title': 'Студия в центре',
+        'title': 'Студия в центре Грозного',
         'deal_type': Property.DealType.RENT,
         'property_type': Property.PropertyType.APARTMENT,
-        'price': Decimal('65000'),
-        'area': Decimal('28.5'),
+        'price': Decimal('35000'),
+        'area': Decimal('32.0'),
         'rooms': 1,
         'floor': 4,
         'floors_total': 9,
-        'city': 'Москва',
-        'address': 'пер. Камергерский, 3',
+        'district': 'Центр',
+        'address': 'ул. Мира, 7',
         'description': 'Сдаётся на длительный срок, мебель и техника включены.',
     },
     {
-        'title': 'Дом с участком',
+        'title': 'Дом с участком в Новых Алдах',
         'deal_type': Property.DealType.SALE,
         'property_type': Property.PropertyType.HOUSE,
-        'price': Decimal('28900000'),
-        'area': Decimal('160.0'),
+        'price': Decimal('14500000'),
+        'area': Decimal('140.0'),
         'rooms': 4,
         'floor': 2,
         'floors_total': 2,
-        'city': 'Химки',
-        'address': 'пос. Новогорск, ул. Лесная, 8',
-        'description': 'Коттедж для семьи, участок 6 соток, гараж.',
+        'district': 'Новые Алды',
+        'address': 'ул. Мамсурова, 24',
+        'description': 'Семейный дом с двором, удобный выезд в центр города.',
     },
     {
-        'title': 'Офис у метро',
+        'title': 'Офис у пр. Путина',
         'deal_type': Property.DealType.RENT,
         'property_type': Property.PropertyType.COMMERCIAL,
-        'price': Decimal('180000'),
-        'area': Decimal('95.0'),
+        'price': Decimal('95000'),
+        'area': Decimal('72.0'),
         'rooms': None,
-        'floor': 3,
-        'floors_total': 8,
-        'city': 'Санкт-Петербург',
-        'address': 'Невский пр., 100',
-        'description': 'Открытое пространство, отдельный вход со двора.',
+        'floor': 2,
+        'floors_total': 6,
+        'district': 'Центр',
+        'address': 'пр. В.В. Путина, 15',
+        'description': 'Коммерческое помещение для офиса или шоурума в Грозном.',
     },
     {
-        'title': '3-комн. в Грозном',
+        'title': '3-комн. в ЖК «Первый»',
         'deal_type': Property.DealType.SALE,
         'property_type': Property.PropertyType.APARTMENT,
         'price': Decimal('7355250'),
@@ -69,26 +69,39 @@ DEMO_PROPERTIES = [
         'rooms': 3,
         'floor': 5,
         'floors_total': 12,
-        'city': 'Грозный',
-        'address': 'пр. В.В. Путина, 15',
-        'description': 'Пример объекта по региону — удобно проверить фильтр города.',
+        'district': 'Шейх-Мансуровский',
+        'address': 'ул. Фасадная, 5',
+        'description': 'Просторная квартира в современном жилом комплексе Грозного.',
+    },
+    {
+        'title': 'Таунхаус у Грозного моря',
+        'deal_type': Property.DealType.SALE,
+        'property_type': Property.PropertyType.TOWNHOUSE,
+        'price': Decimal('9800000'),
+        'area': Decimal('110.0'),
+        'rooms': 3,
+        'floor': 2,
+        'floors_total': 2,
+        'district': 'Грозненский район',
+        'address': 'пос. Пригородный, ул. Озёрная, 3',
+        'description': 'Таунхаус рядом с зоной отдыха, для семьи или сдачи.',
     },
 ]
 
 
 class Command(BaseCommand):
-    help = 'Создаёт демо-риелтора и опубликованные объекты для локального MVP'
+    help = 'Демо-риелтор и объекты только по Грозному'
 
     @transaction.atomic
     def handle(self, *args, **options):
         realtor, created = User.objects.get_or_create(
             username='realtor',
             defaults={
-                'first_name': 'Анна',
-                'last_name': 'Риелторова',
+                'first_name': 'Зарема',
+                'last_name': 'Алиева',
                 'email': 'realtor@reeltor.example',
                 'role': User.Role.REALTOR,
-                'phone': '+7 (495) 111-22-33',
+                'phone': '+7 (8712) 22-33-44',
             },
         )
         if created:
@@ -98,13 +111,21 @@ class Command(BaseCommand):
         else:
             self.stdout.write('Риелтор realtor уже есть')
 
+        # Убираем старые демо-объекты других городов
+        removed, _ = Property.objects.exclude(city=GROZNY).delete()
+        if removed:
+            self.stdout.write(f'Удалено объектов вне Грозного: {removed}')
+
+        Property.objects.filter(city=GROZNY).update(city=GROZNY)
+
         created_count = 0
         for data in DEMO_PROPERTIES:
-            obj, was_created = Property.objects.get_or_create(
+            obj, was_created = Property.objects.update_or_create(
                 title=data['title'],
-                city=data['city'],
+                address=data['address'],
                 defaults={
                     **data,
+                    'city': GROZNY,
                     'status': Property.Status.PUBLISHED,
                     'realtor': realtor,
                 },
@@ -112,4 +133,7 @@ class Command(BaseCommand):
             if was_created:
                 created_count += 1
 
-        self.stdout.write(self.style.SUCCESS(f'Добавлено объектов: {created_count}'))
+        self.stdout.write(self.style.SUCCESS(
+            f'Объектов в Грозном: {Property.objects.filter(city=GROZNY).count()} '
+            f'(новых: {created_count})'
+        ))
