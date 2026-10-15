@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="container hero-content">
+    <p class="brand-mark">Reeltor</p>
+    <h1>Подберём объект под задачу — от первой фильтровки до сделки</h1>
+    <p class="lead">Каталог продажи и аренды, понятные фильтры и заявка на персональный подбор от риелтора.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="{% url 'catalog' %}">Смотреть каталог</a>
+      <a class="btn btn-ghost" href="{% url 'selection' %}" style="border-color:rgba(255,255,255,.45);color:#fff">Заказать подбор</a>
+    </div>
+
+    <form class="quick-search" method="get" action="{% url 'catalog' %}" aria-label="Быстрый поиск">
+      <label>
+        <span>Сделка</span>
+        <select name="deal">
+          <option value="">Любая</option>
+          {% for value, label in deal_types %}
+          <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Тип</span>
+        <select name="type">
+          <option value="">Любой</option>
+          {% for value, label in property_types %}
+          <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>
+        <span>Город</span>
+        <input type="text" name="city" placeholder="Москва">
+      </label>
+      <label>
+        <span>Цена до, ₽</span>
+        <input type="number" name="price_max" min="0" step="100000" placeholder="10 000 000">
+      </label>
+      <button type="submit" class="btn btn-secondary">Найти</button>
+    </form>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Как работает агентство</h2>
+        <p>Структура как у сильных агентств: сначала результат, потом процесс.</p>
+      </div>
+    </div>
+    <div class="services">
+      <article class="service">
+        <h3>Каталог с фильтрами</h3>
+        <p>Продажа и аренда, город, комнаты, цена и площадь — как в крупных витринах недвижимости.</p>
+      </article>
+      <article class="service">
+        <h3>Персональный подбор</h3>
+        <p>Короткий бриф: бюджет, район, тип объекта. Риелтор соберёт подборку под вашу задачу.</p>
+      </article>
+      <article class="service">
+        <h3>Сопровождение</h3>
+        <p>Контакты агентства и карточка объекта с риелтором — чтобы быстро перейти к просмотру.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>Свежие предложения</h2>
+        <p>
+          {% if sale_count or rent_count %}
+            В каталоге: {{ sale_count }} на продажу · {{ rent_count }} в аренду
+          {% else %}
+            Опубликованные объекты появятся здесь
+          {% endif %}
+        </p>
+      </div>
+      <a href="{% url 'catalog' %}">Весь каталог →</a>
+    </div>
+
+    {% if latest_properties %}
+    <div class="property-grid">
+      {% for item in latest_properties %}
+        {% include "properties/_card.html" with item=item %}
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="empty">Пока нет опубликованных объектов. Добавьте их в <a href="/admin/">админке</a> или загрузите демо-данные.</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="container selection-layout">
+    <div>
+      <h2 style="font-family:var(--display);font-size:1.7rem;margin:0 0 .5rem">Нужна подборка, а не бесконечный скролл?</h2>
+      <p class="lead" style="color:var(--muted)">Оставьте заявку — уточним цель, бюджет и сроки, затем пришлём варианты.</p>
+    </div>
+    <div>
+      <a class="btn btn-primary" href="{% url 'selection' %}">Перейти к подбору</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

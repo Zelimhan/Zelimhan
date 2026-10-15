@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Reeltor{% endblock %} — подбор недвижимости</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Literata:opsz,wght@7..72,500;7..72,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="{% url 'home' %}">Reeltor</a>
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'catalog' %}">Каталог</a>
+        <a href="{% url 'selection' %}">Подбор</a>
+        <a href="{% url 'contacts' %}">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    {% if messages %}
+    <div class="container" style="padding-top:1rem">
+      <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>
+        <strong class="logo">Reeltor</strong>
+        <p>Агентство подбора недвижимости: каталог, фильтры и персональные подборки.</p>
+      </div>
+      <div class="footer-links">
+        <a href="{% url 'catalog' %}">Каталог</a>
+        <a href="{% url 'selection' %}">Подбор</a>
+        <a href="{% url 'contacts' %}">Контакты</a>
+        <a href="/admin/">Админка</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Заявка отправлена{% endblock %}
+
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="thanks-box">
+      <h1>Спасибо!</h1>
+      <p class="lead" style="color:var(--muted);margin-inline:auto">Заявка на подбор принята. Мы свяжемся с вами, чтобы уточнить детали и подготовить варианты.</p>
+      <div class="cta-row" style="justify-content:center">
+        <a class="btn btn-primary" href="{% url 'catalog' %}">В каталог</a>
+        <a class="btn btn-ghost" href="{% url 'home' %}">На главную</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Подбор{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="container">
+    <h1>Персональный подбор</h1>
+    <p class="lead">Короткий бриф — и риелтор соберёт варианты под бюджет и задачу.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container selection-layout">
+    <div class="steps">
+      <h2>Как это проходит</h2>
+      <ol>
+        <li>
+          <strong>Бриф</strong>
+          <p>Цель сделки, бюджет, район, тип объекта и сроки.</p>
+        </li>
+        <li>
+          <strong>Подборка</strong>
+          <p>Риелтор отберёт актуальные объекты из каталога и рынка.</p>
+        </li>
+        <li>
+          <strong>Просмотры</strong>
+          <p>Согласуем показы и поможем сравнить варианты.</p>
+        </li>
+        <li>
+          <strong>Сделка</strong>
+          <p>Дальше — сопровождение по вашему сценарию (в следующих версиях кабинетов).</p>
+        </li>
+      </ol>
+    </div>
+
+    <div class="form-panel">
+      <h2>Оставить заявку</h2>
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-grid">
+          <label>
+            <span>Имя *</span>
+            {{ form.name }}
+            {{ form.name.errors }}
+          </label>
+          <label>
+            <span>Телефон *</span>
+            {{ form.phone }}
+            {{ form.phone.errors }}
+          </label>
+          <label>
+            <span>Email</span>
+            {{ form.email }}
+            {{ form.email.errors }}
+          </label>
+          <label>
+            <span>Сделка</span>
+            {{ form.deal_type }}
+          </label>
+          <label>
+            <span>Тип объекта</span>
+            {{ form.property_type }}
+          </label>
+          <label>
+            <span>Город / регион</span>
+            {{ form.city }}
+          </label>
+          <label>
+            <span>Бюджет от, ₽</span>
+            {{ form.budget_min }}
+          </label>
+          <label>
+            <span>Бюджет до, ₽</span>
+            {{ form.budget_max }}
+          </label>
+          <label>
+            <span>Комнат</span>
+            {{ form.rooms }}
+          </label>
+          <label class="full">
+            <span>Пожелания</span>
+            {{ form.comment }}
+          </label>
+        </div>
+        <p style="margin:1rem 0 0">
+          <button type="submit" class="btn btn-primary">Отправить заявку</button>
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
